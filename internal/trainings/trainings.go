@@ -23,10 +23,6 @@ func (t *Training) Parse(datastring string) (err error) {
 		return fmt.Errorf("incorrect number of values")
 	}
 
-	/*if prs[1] != "Ходьба" || prs[1] != "Бег" {
-		return fmt.Errorf("incorrect type of training")
-	}*/
-
 	steps, err := strconv.Atoi(prs[0])
 	if err != nil {
 		return err
@@ -56,16 +52,16 @@ func (t Training) ActionInfo() (string, error) {
 
 	averageSpeed := spentenergy.MeanSpeed(t.Steps, t.Height, t.Duration)
 
-	if t.TrainingType == "Бег" {
+	switch t.TrainingType {
+	case "Бег":
 		spentCalories, err := spentenergy.RunningSpentCalories(t.Steps, t.Weight, t.Height, t.Duration)
 		if err != nil {
 			return "", err
 		}
 		return fmt.Sprintf("Тип тренировки: %s\nДлительность: %.2f ч.\nДистанция: %.2f км.\nСкорость: %.2f км/ч\nСожгли калорий: %.2f\n",
 			t.TrainingType, t.Duration.Hours(), distance, averageSpeed, spentCalories), nil
-	}
 
-	if t.TrainingType == "Ходьба" {
+	case "Ходьба":
 		spentCalories, err := spentenergy.WalkingSpentCalories(t.Steps, t.Weight, t.Height, t.Duration)
 		if err != nil {
 			return "", err

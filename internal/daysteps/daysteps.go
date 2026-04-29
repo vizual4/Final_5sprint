@@ -24,24 +24,26 @@ func (ds *DaySteps) Parse(datastring string) (err error) {
 
 	steps, err := strconv.Atoi(data[0])
 
+	if err != nil {
+		return err
+	}
+
 	if steps <= 0 {
 		return fmt.Errorf("steps less then zero")
 	}
 
-	if err != nil {
-		return err
-	}
 	ds.Steps = steps
 
 	duration, err := time.ParseDuration(data[1])
+
+	if err != nil {
+		return err
+	}
 
 	if duration <= 0 {
 		return fmt.Errorf("time less then zero")
 	}
 
-	if err != nil {
-		return err
-	}
 	ds.Duration = duration
 	return nil
 
